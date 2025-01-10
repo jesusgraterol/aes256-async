@@ -1,14 +1,17 @@
 import { describe, test, expect } from 'vitest';
-import { encryptSync } from './index.js';
+import { encryptSync, decryptSync } from './index.js';
 
 /* ************************************************************************************************
  *                                             TESTS                                              *
  ************************************************************************************************ */
 
-describe.skip('Synchronous Implementation', () => {
+describe('Synchronous Implementation', () => {
   test.each([
     ['My$Shor.tT96@Se6rTe', 'Hello world!'],
   ])('encryptSync', (secret, data) => {
     expect(() => encryptSync(secret, data)).not.toThrowError();
+    const enc = encryptSync(secret, data);
+    console.log(enc);
+    console.log(decryptSync(secret, enc));
   });
 });

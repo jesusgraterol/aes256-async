@@ -1,3 +1,4 @@
+import { Buffer } from 'node:buffer';
 import { encodeError } from 'error-message-utils';
 import { ERRORS } from '../shared/errors.js';
 
@@ -43,6 +44,18 @@ const validateInput = (secret: string, data: string): void => {
 };
 
 /**
+ * Ensures the decrypted data is a valid string.
+ * @param input
+ * @throws
+ * - INVALID_ENCRYPTED_DATA: if the encrypted data decrypts to an invalid or empty string.
+ */
+const validateDecryptedInput = (input: Buffer): void => {
+  if (input.length < 17) {
+    throw new Error(encodeError('The provided encrypted data must decrypt to a non-empty string.', ERRORS.INVALID_ENCRYPTED_DATA));
+  }
+};
+
+/**
  * Compares the original data with the decrypted data to ensure the data was and can be decrypted
  * correctly in the future.
  * @param data
@@ -59,10 +72,12 @@ const validateEncryptionResult = (data: string, decryptedData: string): void => 
 
 
 
+
 /* ************************************************************************************************
  *                                         MODULE EXPORTS                                         *
  ************************************************************************************************ */
 export {
   validateInput,
+  validateDecryptedInput,
   validateEncryptionResult,
 };

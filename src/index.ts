@@ -1,8 +1,12 @@
+import { Buffer } from 'node:buffer';
 import crypto from 'node:crypto';
-import { promisify } from 'node:util';
 import { CIPHER_ALGORITHM } from './shared/constants.js';
 import { hashSecret } from './utils/index.js';
-import { validateInput, validateEncryptionResult } from './validations/index.js';
+import {
+  validateInput,
+  validateDecryptedInput,
+  validateEncryptionResult,
+} from './validations/index.js';
 
 /* ************************************************************************************************
  *                                          ASYNCHRONOUS                                          *
@@ -24,13 +28,25 @@ import { validateInput, validateEncryptionResult } from './validations/index.js'
  * @throws
  * - INVALID_OR_EMPTY_DATA: if the data is not a string or is an empty string.
  * - INVALID_SECRET: if the secret is not a string or is an empty string.
+ * - INVALID_ENCRYPTED_DATA: if the encrypted data decrypts to an invalid or empty string.
  */
 const decryptSync = (secret: string, encryptedData: string): string => {
   // validate the input
   validateInput(secret, encryptedData);
 
+  // decrypt the data
+  const input = Buffer.from(encryptedData, 'base64');
+  validateDecryptedInput(input);
+
+  const iv = input.subarray(0, 16);
+  const decipher = crypto.createDecipheriv(CIPHER_ALGORITHM, hashSecret(secret), iv);
+
+  const ciphertext = input.subarray(16);
+
+  const output = Buffer.concat([decipher.update(ciphertext), decipher.final()]).toString();
+
   // finally, return the decrypted message
-  return '';
+  return output;
 };
 
 /**
