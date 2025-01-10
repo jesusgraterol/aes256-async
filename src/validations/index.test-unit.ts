@@ -1,4 +1,5 @@
 import { describe, test, expect } from 'vitest';
+import { ILLEGAL_CHARACTER } from '../shared/constants.js';
 import { ERRORS } from '../shared/errors.js';
 import { validateInput, validateEncryptionResult } from './index.js';
 
@@ -9,6 +10,7 @@ import { validateInput, validateEncryptionResult } from './index.js';
 describe('validateInput', () => {
   test.each<Array<any>>([
     ['Some Valid Secret', ''],
+    ['Some Valid Secret', `Some String with ${ILLEGAL_CHARACTER}`],
     ['Some Valid Secret', 1],
     ['Some Valid Secret', null],
     ['Some Valid Secret', undefined],

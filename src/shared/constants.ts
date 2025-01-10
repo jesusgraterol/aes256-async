@@ -7,6 +7,15 @@
 // the encryption algorithm (cipher) type to be used
 const CIPHER_ALGORITHM = 'aes-256-ctr';
 
+/**
+ * Illegal Character
+ * Many web pages and other document formats use UTF-8. This is the default character encoding.
+ * When decoding a Buffer into a string that does not exclusively contain valid UTF-8 data, the
+ * Unicode replacement character U+FFFD � will be used to represent those errors.
+ * https://nodejs.org/docs/latest/api/buffer.html#buffers-and-character-encodings
+ */
+const ILLEGAL_CHARACTER = '�';
+
 
 
 
@@ -16,4 +25,5 @@ const CIPHER_ALGORITHM = 'aes-256-ctr';
  ************************************************************************************************ */
 export {
   CIPHER_ALGORITHM,
+  ILLEGAL_CHARACTER,
 };

@@ -35,7 +35,6 @@ describe('Synchronous Implementation', () => {
     const msg = 'Hello world!';
     const enc = encryptSync(secret, msg);
     expect(decryptSync(secret, enc)).toBe(msg);
-    console.log(encryptSync('My.$ecreT', 'Hello world!'));
   });
 
   test('attempting to decrypt a message with an incorrect secret results in an error', () => {
