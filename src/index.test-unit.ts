@@ -1,6 +1,7 @@
 import { describe, test, expect } from 'vitest';
 import { encryptSync, decryptSync } from './index.js';
 import * as td from './index.test-data.js';
+import { ERRORS } from './shared/errors.js';
 
 /* ************************************************************************************************
  *                                             TESTS                                              *
@@ -34,5 +35,10 @@ describe('Synchronous Implementation', () => {
     const msg = 'Hello world!';
     const enc = encryptSync(secret, msg);
     expect(decryptSync(secret, enc)).toBe(msg);
+  });
+
+  test('attempting to decrypt a message with an incorrect secret results in an error', () => {
+    const enc = encryptSync('123456', 'Hello world!');
+    expect(() => decryptSync('12345', enc)).toThrowError(ERRORS.WRONG_SECRET);
   });
 });
