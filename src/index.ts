@@ -4,13 +4,6 @@ import { CIPHER_ALGORITHM } from './shared/constants.js';
 import { validateInput, validateEncryptionResult } from './validations/index.js';
 
 /* ************************************************************************************************
- *                                            HELPERS                                             *
- ************************************************************************************************ */
-
-
-
-
-/* ************************************************************************************************
  *                                          ASYNCHRONOUS                                          *
  ************************************************************************************************ */
 
@@ -51,16 +44,16 @@ const encryptSync = (secret: string, data: string): string => {
   validateInput(secret, data);
 
   // encrypt the data
-  const salt = crypto.randomBytes(16);
-  const derivedKey = crypto.scryptSync(secret, salt, 32);
+  const sha256 = crypto.createHash('sha256');
+  sha256.update(secret);
 
   const iv = crypto.randomBytes(16);
-  const cipher = crypto.createCipheriv(CIPHER_ALGORITHM, derivedKey, iv);
+  const cipher = crypto.createCipheriv(CIPHER_ALGORITHM, sha256.digest(), iv);
 
   const buffer = Buffer.from(data);
 
   const ciphertext = Buffer.concat([cipher.update(buffer), cipher.final()]);
-  const encrypted = Buffer.concat([salt, iv, ciphertext]);
+  const encrypted = Buffer.concat([iv, ciphertext, cipher.final()]);
   const encryptedString = encrypted.toString('base64');
 
   // ensure the data can be recovered
