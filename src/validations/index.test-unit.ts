@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest';
 import { ERRORS } from '../shared/errors.js';
-import { validateInput } from './index.js';
+import { validateInput, validateEncryptionResult } from './index.js';
 
 /* ************************************************************************************************
  *                                             TESTS                                              *
@@ -27,5 +27,10 @@ describe('validateInput', () => {
     [[], 'Some Valid Data :)'],
   ])('validateInput(%s, %s)', (secret, data) => {
     expect(() => validateInput(secret, data)).toThrowError(ERRORS.INVALID_SECRET);
+  });
+
+  test('validateEncryptionResult', () => {
+    expect(() => validateEncryptionResult('Hello!', 'Hello!')).not.toThrowError();
+    expect(() => validateEncryptionResult('Hello!', 'hello!')).toThrowError(ERRORS.CORRUPTED_DATA);
   });
 });

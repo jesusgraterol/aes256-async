@@ -1,11 +1,14 @@
 import { describe, test, expect } from 'vitest';
+import { encryptSync } from './index.js';
 
 /* ************************************************************************************************
  *                                             TESTS                                              *
  ************************************************************************************************ */
 
-describe('Synchronous Implementation', () => {
-  test.skip('can calculate 2 plus 2', () => {
-    expect(2 + 2).toBe(4);
+describe.skip('Synchronous Implementation', () => {
+  test.each([
+    ['My$Shor.tT96@Se6rTe', 'Hello world!'],
+  ])('encryptSync', (secret, data) => {
+    expect(() => encryptSync(secret, data)).not.toThrowError();
   });
 });

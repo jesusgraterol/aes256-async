@@ -26,7 +26,10 @@ import { validateInput, validateEncryptionResult } from './validations/index.js'
  * - INVALID_SECRET: if the secret is not a string or is an empty string.
  */
 const decryptSync = (secret: string, encryptedData: string): string => {
+  // validate the input
   validateInput(secret, encryptedData);
+
+  // finally, return the decrypted message
   return '';
 };
 
@@ -39,6 +42,7 @@ const decryptSync = (secret: string, encryptedData: string): string => {
  * @throws
  * - INVALID_OR_EMPTY_DATA: if the data is not a string or is an empty string.
  * - INVALID_SECRET: if the secret is not a string or is an empty string.
+ * - CORRUPTED_DATA: if the decrypted data does not match the original data.
  */
 const encryptSync = (secret: string, data: string): string => {
   // validate the input

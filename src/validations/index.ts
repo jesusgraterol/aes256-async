@@ -47,6 +47,8 @@ const validateInput = (secret: string, data: string): void => {
  * correctly in the future.
  * @param data
  * @param decryptedData
+ * @throws
+ * - CORRUPTED_DATA: if the decrypted data does not match the original data.
  */
 const validateEncryptionResult = (data: string, decryptedData: string): void => {
   if (data !== decryptedData) {
