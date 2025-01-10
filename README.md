@@ -1,4 +1,4 @@
-# AES-256 Asynchronous
+# AES-256 Async
 
 The `aes256-async` package allows developers to easily encrypt and decrypt data by making use of the [AES-256](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) specification. It exposes syncrhonous and asynchronous functions to avoid blocking the main thread. Moreover, the secret can be of any size because it is hashed using the [Secure Hash Algorithm 2 (SHA-256)](https://en.wikipedia.org/wiki/SHA-2).
 
