@@ -3,12 +3,10 @@
 /* ************************************************************************************************
  *                                         IMPLEMENTATION                                         *
  ************************************************************************************************ */
-type IErrors = 'INVALID_OR_EMPTY_DATA' | 'INVALID_SECRET' | 'CORRUPTED_DATA';
-const ERRORS: { [key in IErrors]: IErrors } = {
-  INVALID_OR_EMPTY_DATA: 'INVALID_OR_EMPTY_DATA',
-  INVALID_SECRET: 'INVALID_SECRET',
-  CORRUPTED_DATA: 'CORRUPTED_DATA',
-};
+
+// the encryption algorithm (cipher) type to be used
+const CIPHER_ALGORITHM = 'aes-256-ctr';
+
 
 
 
@@ -17,5 +15,5 @@ const ERRORS: { [key in IErrors]: IErrors } = {
  *                                         MODULE EXPORTS                                         *
  ************************************************************************************************ */
 export {
-  ERRORS,
+  CIPHER_ALGORITHM,
 };

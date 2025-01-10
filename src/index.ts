@@ -1,5 +1,14 @@
+import crypto from 'node:crypto';
+import { promisify } from 'node:util';
+import { CIPHER_ALGORITHM } from './shared/constants.js';
+import { validateInput, validateEncryptionResult } from './validations/index.js';
 
-import { validate } from './validations/index.js';
+/* ************************************************************************************************
+ *                                            HELPERS                                             *
+ ************************************************************************************************ */
+
+
+
 
 /* ************************************************************************************************
  *                                          ASYNCHRONOUS                                          *
@@ -23,7 +32,7 @@ import { validate } from './validations/index.js';
  * - INVALID_SECRET: if the secret is not a string or is an empty string.
  */
 const decryptSync = (secret: string, encryptedData: string): string => {
-  validate(secret, encryptedData);
+  validateInput(secret, encryptedData);
   return '';
 };
 
@@ -38,9 +47,29 @@ const decryptSync = (secret: string, encryptedData: string): string => {
  * - INVALID_SECRET: if the secret is not a string or is an empty string.
  */
 const encryptSync = (secret: string, data: string): string => {
-  validate(secret, data);
-  return '';
+  // validate the input
+  validateInput(secret, data);
+
+  // encrypt the data
+  const salt = crypto.randomBytes(16);
+  const derivedKey = crypto.scryptSync(secret, salt, 32);
+
+  const iv = crypto.randomBytes(16);
+  const cipher = crypto.createCipheriv(CIPHER_ALGORITHM, derivedKey, iv);
+
+  const buffer = Buffer.from(data);
+
+  const ciphertext = Buffer.concat([cipher.update(buffer), cipher.final()]);
+  const encrypted = Buffer.concat([salt, iv, ciphertext]);
+  const encryptedString = encrypted.toString('base64');
+
+  // ensure the data can be recovered
+  validateEncryptionResult(data, decryptSync(secret, encryptedString));
+
+  // finally, return the encrypted message
+  return encryptedString;
 };
+
 
 
 

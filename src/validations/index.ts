@@ -37,11 +37,22 @@ const __validateData = (data: string): void => {
  * - INVALID_OR_EMPTY_DATA: if the data is not a string or is an empty string.
  * - INVALID_SECRET: if the secret is not a string or is an empty string.
  */
-const validate = (secret: string, data: string): void => {
+const validateInput = (secret: string, data: string): void => {
   __validateSecret(secret);
   __validateData(data);
 };
 
+/**
+ * Compares the original data with the decrypted data to ensure the data was and can be decrypted
+ * correctly in the future.
+ * @param data
+ * @param decryptedData
+ */
+const validateEncryptionResult = (data: string, decryptedData: string): void => {
+  if (data !== decryptedData) {
+    throw new Error(encodeError('The data could not be decrypted correctly.', ERRORS.CORRUPTED_DATA));
+  }
+};
 
 
 
@@ -50,5 +61,6 @@ const validate = (secret: string, data: string): void => {
  *                                         MODULE EXPORTS                                         *
  ************************************************************************************************ */
 export {
-  validate,
+  validateInput,
+  validateEncryptionResult,
 };

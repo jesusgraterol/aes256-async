@@ -1,12 +1,12 @@
 import { describe, test, expect } from 'vitest';
 import { ERRORS } from '../shared/errors.js';
-import { validate } from './index.js';
+import { validateInput } from './index.js';
 
 /* ************************************************************************************************
  *                                             TESTS                                              *
  ************************************************************************************************ */
 
-describe('validate', () => {
+describe('validateInput', () => {
   test.each<Array<any>>([
     ['Some Valid Secret', ''],
     ['Some Valid Secret', 1],
@@ -14,8 +14,8 @@ describe('validate', () => {
     ['Some Valid Secret', undefined],
     ['Some Valid Secret', {}],
     ['Some Valid Secret', []],
-  ])('validate(%s, %s)', (secret, data) => {
-    expect(() => validate(secret, data)).toThrowError(ERRORS.INVALID_OR_EMPTY_DATA);
+  ])('validateInput(%s, %s)', (secret, data) => {
+    expect(() => validateInput(secret, data)).toThrowError(ERRORS.INVALID_OR_EMPTY_DATA);
   });
 
   test.each<Array<any>>([
@@ -25,7 +25,7 @@ describe('validate', () => {
     [undefined, 'Some Valid Data :)'],
     [{}, 'Some Valid Data :)'],
     [[], 'Some Valid Data :)'],
-  ])('validate(%s, %s)', (secret, data) => {
-    expect(() => validate(secret, data)).toThrowError(ERRORS.INVALID_SECRET);
+  ])('validateInput(%s, %s)', (secret, data) => {
+    expect(() => validateInput(secret, data)).toThrowError(ERRORS.INVALID_SECRET);
   });
 });
