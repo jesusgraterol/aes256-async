@@ -303,7 +303,7 @@ Node.js buffers accept all case variations of encoding strings that they receive
 
 The character encodings currently supported by Node.js are the following:
 
-    'utf8' (alias: 'utf-8'): Multi-byte encoded Unicode characters. Many web pages and other document formats use UTF-8. This is the default character encoding. When decoding a Buffer into a string that does not exclusively contain valid UTF-8 data, the Unicode replacement character U+FFFD � will be used to represent those errors.
+    'utf8' (alias: 'utf-8'): Multi-byte encoded Unicode characters. Many web pages and other document formats use UTF-8. This is the default character encoding. When decoding a Buffer into a string that does not exclusively contain valid UTF-8 data, the Unicode replacement character U+FFFD  will be used to represent those errors.
 
     'utf16le' (alias: 'utf-16le'): Multi-byte encoded Unicode characters. Unlike 'utf8', each character in the string will be encoded using either 2 or 4 bytes. Node.js only supports the little-endian variant of UTF-16.
 

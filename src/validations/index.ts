@@ -44,14 +44,32 @@ const validateInput = (secret: string, data: string): void => {
 };
 
 /**
- * Ensures the decrypted data is a valid string.
+ * Ensures the encrypted data is a valid string.
  * @param input
  * @throws
  * - INVALID_ENCRYPTED_DATA: if the encrypted data decrypts to an invalid or empty string.
  */
-const validateDecryptedInput = (input: Buffer): void => {
+const validateEncryptedBuffer = (input: Buffer): void => {
   if (input.length < 17) {
     throw new Error(encodeError('The provided encrypted data must decrypt to a non-empty string.', ERRORS.INVALID_ENCRYPTED_DATA));
+  }
+};
+
+/**
+ * Ensures the decrypted data is valid. So far, whenever an incorrect secret is provided, Node.js
+ * returns a string containing garbage characters like �.
+ *
+ * From the docs: Many web pages and other document formats use UTF-8. This is the default character
+ * encoding. When decoding a Buffer into a string that does not exclusively contain valid UTF-8
+ * data, the Unicode replacement character U+FFFD � will be used to represent those errors.
+ * More info: https://nodejs.org/docs/latest/api/buffer.html#buffers-and-character-encodings
+ * @param data
+ * @throws
+ * - WRONG_SECRET: if the data cannot be decrypted.
+ */
+const validateDecryptedData = (data: string): void => {
+  if (typeof data !== 'string' || data.length === 0 || data.includes('�')) {
+    throw new Error(encodeError('Failed to decrypt the data with the provided secret.', ERRORS.WRONG_SECRET));
   }
 };
 
@@ -78,6 +96,7 @@ const validateEncryptionResult = (data: string, decryptedData: string): void => 
  ************************************************************************************************ */
 export {
   validateInput,
-  validateDecryptedInput,
+  validateEncryptedBuffer,
+  validateDecryptedData,
   validateEncryptionResult,
 };

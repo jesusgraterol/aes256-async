@@ -4,7 +4,8 @@ import { CIPHER_ALGORITHM } from './shared/constants.js';
 import { hashSecret } from './utils/index.js';
 import {
   validateInput,
-  validateDecryptedInput,
+  validateEncryptedBuffer,
+  validateDecryptedData,
   validateEncryptionResult,
 } from './validations/index.js';
 
@@ -36,17 +37,20 @@ const decryptSync = (secret: string, encryptedData: string): string => {
 
   // decrypt the data
   const input = Buffer.from(encryptedData, 'base64');
-  validateDecryptedInput(input);
+  validateEncryptedBuffer(input);
 
   const iv = input.subarray(0, 16);
   const decipher = crypto.createDecipheriv(CIPHER_ALGORITHM, hashSecret(secret), iv);
 
   const ciphertext = input.subarray(16);
 
-  const output = Buffer.concat([decipher.update(ciphertext), decipher.final()]).toString();
+  const decrypted = Buffer.concat([decipher.update(ciphertext), decipher.final()]).toString();
+
+  // ensure the decrypted data is valid
+  validateDecryptedData(decrypted);
 
   // finally, return the decrypted message
-  return output;
+  return decrypted;
 };
 
 /**
@@ -71,14 +75,13 @@ const encryptSync = (secret: string, data: string): string => {
   const buffer = Buffer.from(data);
 
   const ciphertext = cipher.update(buffer);
-  const encrypted = Buffer.concat([iv, ciphertext, cipher.final()]);
-  const encryptedString = encrypted.toString('base64');
+  const encrypted = Buffer.concat([iv, ciphertext, cipher.final()]).toString('base64');
 
   // ensure the data can be recovered
-  validateEncryptionResult(data, decryptSync(secret, encryptedString));
+  validateEncryptionResult(data, decryptSync(secret, encrypted));
 
   // finally, return the encrypted message
-  return encryptedString;
+  return encrypted;
 };
 
 
