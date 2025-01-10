@@ -27,7 +27,7 @@ const __validateSecret = (secret: string): void => {
  */
 const __validateData = (data: string): void => {
   if (typeof data !== 'string' || data.length === 0 || data.includes(ILLEGAL_CHARACTER)) {
-    throw new Error(encodeError('The provided data is invalid, please make sure to provide a non-empty string.', ERRORS.INVALID_OR_EMPTY_DATA));
+    throw new Error(encodeError('The provided data is invalid, please make sure to provide a non-empty string that only contains UTF-8 character encoding.', ERRORS.INVALID_OR_EMPTY_DATA));
   }
 };
 
