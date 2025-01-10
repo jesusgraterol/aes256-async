@@ -1,6 +1,7 @@
 import crypto from 'node:crypto';
 import { promisify } from 'node:util';
 import { CIPHER_ALGORITHM } from './shared/constants.js';
+import { hashSecret } from './utils/index.js';
 import { validateInput, validateEncryptionResult } from './validations/index.js';
 
 /* ************************************************************************************************
@@ -44,15 +45,12 @@ const encryptSync = (secret: string, data: string): string => {
   validateInput(secret, data);
 
   // encrypt the data
-  const sha256 = crypto.createHash('sha256');
-  sha256.update(secret);
-
   const iv = crypto.randomBytes(16);
-  const cipher = crypto.createCipheriv(CIPHER_ALGORITHM, sha256.digest(), iv);
+  const cipher = crypto.createCipheriv(CIPHER_ALGORITHM, hashSecret(secret), iv);
 
   const buffer = Buffer.from(data);
 
-  const ciphertext = Buffer.concat([cipher.update(buffer), cipher.final()]);
+  const ciphertext = cipher.update(buffer);
   const encrypted = Buffer.concat([iv, ciphertext, cipher.final()]);
   const encryptedString = encrypted.toString('base64');
 
