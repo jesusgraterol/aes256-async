@@ -53,6 +53,7 @@ const decrypt = async (secret: string, encryptedData: string): Promise<string> =
  * - INVALID_OR_EMPTY_DATA: if the data is not a string or is an empty string.
  * - INVALID_SECRET: if the secret is not a string or is an empty string.
  * - CORRUPTED_DATA: if the decrypted data does not match the original data.
+ * - WRONG_SECRET: if the data cannot be decrypted.
  */
 const encrypt = async (secret: string, data: string): Promise<string> => {
   // validate the input
@@ -113,6 +114,7 @@ const decryptSync = (secret: string, encryptedData: string): string => {
  * - INVALID_OR_EMPTY_DATA: if the data is not a string or is an empty string.
  * - INVALID_SECRET: if the secret is not a string or is an empty string.
  * - CORRUPTED_DATA: if the decrypted data does not match the original data.
+ * - WRONG_SECRET: if the data cannot be decrypted.
  */
 const encryptSync = (secret: string, data: string): string => {
   // validate the input
