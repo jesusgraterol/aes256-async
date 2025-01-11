@@ -1,7 +1,7 @@
 import { Buffer } from 'node:buffer';
 import crypto from 'node:crypto';
 import { CIPHER_ALGORITHM } from './shared/constants.js';
-import { hashSecret } from './utils/index.js';
+import { hashSecretSync } from './utils/index.js';
 import {
   validateInput,
   validateEncryptedBuffer,
@@ -40,7 +40,7 @@ const decryptSync = (secret: string, encryptedData: string): string => {
   validateEncryptedBuffer(input);
 
   const iv = input.subarray(0, 16);
-  const decipher = crypto.createDecipheriv(CIPHER_ALGORITHM, hashSecret(secret), iv);
+  const decipher = crypto.createDecipheriv(CIPHER_ALGORITHM, hashSecretSync(secret), iv);
 
   const ciphertext = input.subarray(16);
 
@@ -70,7 +70,7 @@ const encryptSync = (secret: string, data: string): string => {
 
   // encrypt the data
   const iv = crypto.randomBytes(16);
-  const cipher = crypto.createCipheriv(CIPHER_ALGORITHM, hashSecret(secret), iv);
+  const cipher = crypto.createCipheriv(CIPHER_ALGORITHM, hashSecretSync(secret), iv);
 
   const buffer = Buffer.from(data);
 
