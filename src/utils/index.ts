@@ -47,6 +47,22 @@ const __hashSecretSync = (secret: string): Buffer => {
  * Creates the cipher with random initialization vectors and returns the encrypted data.
  * @param secret
  * @param data
+ * @returns Promise<string>
+ */
+const encryptData = async (secret: string, data: string): Promise<string> => {
+  const iv = crypto.randomBytes(16);
+  const cipher = crypto.createCipheriv(CIPHER_ALGORITHM, await __hashSecret(secret), iv);
+
+  const buffer = Buffer.from(data);
+
+  const ciphertext = cipher.update(buffer);
+  return Buffer.concat([iv, ciphertext, cipher.final()]).toString('base64');
+};
+
+/**
+ * Creates the cipher with random initialization vectors and returns the encrypted data.
+ * @param secret
+ * @param data
  * @returns string
  */
 const encryptDataSync = (secret: string, data: string): string => {
@@ -66,6 +82,22 @@ const encryptDataSync = (secret: string, data: string): string => {
 /* ************************************************************************************************
  *                                            DECIPHER                                            *
  ************************************************************************************************ */
+
+/**
+ * Creates the decipher and returns the result of the decryption.
+ * @param secret
+ * @param encryptedData
+ * @returns Promise<string>
+ */
+const decryptData = async (secret: string, encryptedData: Buffer): Promise<string> => {
+  const iv = encryptedData.subarray(0, 16);
+  const secretHash = await __hashSecret(secret);
+  const decipher = crypto.createDecipheriv(CIPHER_ALGORITHM, secretHash, iv);
+
+  const ciphertext = encryptedData.subarray(16);
+
+  return Buffer.concat([decipher.update(ciphertext), decipher.final()]).toString();
+};
 
 /**
  * Creates the decipher and returns the result of the decryption.
@@ -95,8 +127,10 @@ export {
   __hashSecretSync,
 
   // cipher
+  encryptData,
   encryptDataSync,
 
   // decipher
+  decryptData,
   decryptDataSync,
 };
