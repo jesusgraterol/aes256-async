@@ -1,7 +1,5 @@
 import { Buffer } from 'node:buffer';
-import crypto from 'node:crypto';
-import { CIPHER_ALGORITHM } from './shared/constants.js';
-import { hashSecretSync } from './utils/index.js';
+import { encryptDataSync, decryptDataSync } from './utils/index.js';
 import {
   validateInput,
   validateEncryptedBuffer,
@@ -38,13 +36,7 @@ const decryptSync = (secret: string, encryptedData: string): string => {
   // decrypt the data
   const input = Buffer.from(encryptedData, 'base64');
   validateEncryptedBuffer(input);
-
-  const iv = input.subarray(0, 16);
-  const decipher = crypto.createDecipheriv(CIPHER_ALGORITHM, hashSecretSync(secret), iv);
-
-  const ciphertext = input.subarray(16);
-
-  const decrypted = Buffer.concat([decipher.update(ciphertext), decipher.final()]).toString();
+  const decrypted = decryptDataSync(secret, input);
 
   // ensure the decrypted data is valid
   validateDecryptedData(decrypted);
@@ -69,13 +61,7 @@ const encryptSync = (secret: string, data: string): string => {
   validateInput(secret, data);
 
   // encrypt the data
-  const iv = crypto.randomBytes(16);
-  const cipher = crypto.createCipheriv(CIPHER_ALGORITHM, hashSecretSync(secret), iv);
-
-  const buffer = Buffer.from(data);
-
-  const ciphertext = cipher.update(buffer);
-  const encrypted = Buffer.concat([iv, ciphertext, cipher.final()]).toString('base64');
+  const encrypted = encryptDataSync(secret, data);
 
   // ensure the data can be recovered
   validateEncryptionResult(data, decryptSync(secret, encrypted));
