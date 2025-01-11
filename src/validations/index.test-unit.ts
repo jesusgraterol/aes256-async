@@ -1,7 +1,8 @@
 import { describe, test, expect } from 'vitest';
 import { ILLEGAL_CHARACTER } from '../shared/constants.js';
 import { ERRORS } from '../shared/errors.js';
-import { validateInput, validateEncryptionResult } from './index.js';
+import { validateInput, validateEncryptionResult, validateDecryptedData } from './index.js';
+import { decryptDataSync, encryptDataSync } from '../utils/index.js';
 
 /* ************************************************************************************************
  *                                             TESTS                                              *
@@ -29,6 +30,13 @@ describe('validateInput', () => {
     [[], 'Some Valid Data :)'],
   ])('validateInput(%s, %s)', (secret, data) => {
     expect(() => validateInput(secret, data)).toThrowError(ERRORS.INVALID_SECRET);
+  });
+
+  test('validateDecryptedData', () => {
+    const enc = encryptDataSync('SomeCoolSecret', 'Hello World!');
+    expect(
+      () => validateDecryptedData(decryptDataSync('SomeWrongSecret', Buffer.from(enc))),
+    ).toThrowError(ERRORS.WRONG_SECRET);
   });
 
   test('validateEncryptionResult', () => {
