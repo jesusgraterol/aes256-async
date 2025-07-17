@@ -11,18 +11,19 @@ import { CIPHER_ALGORITHM, HASHING_ALGORITHM } from '../shared/constants.js';
  * @param secret
  * @returns Promise<Buffer>
  */
-const __hashSecret = (secret: string): Promise<Buffer> => new Promise((resolve, reject) => {
-  const hash = crypto.createHash(HASHING_ALGORITHM);
-  hash.on('readable', () => {
-    const data = hash.read();
-    if (data) {
-      resolve(data);
-    }
+const __hashSecret = (secret: string): Promise<Buffer> =>
+  new Promise((resolve, reject) => {
+    const hash = crypto.createHash(HASHING_ALGORITHM);
+    hash.on('readable', () => {
+      const data = hash.read();
+      if (data) {
+        resolve(data);
+      }
+    });
+    hash.on('error', (err) => reject(err));
+    hash.write(secret);
+    hash.end();
   });
-  hash.on('error', (err) => reject(err));
-  hash.write(secret);
-  hash.end();
-});
 
 /**
  * Hashes the provided secret using the SHA-256 algorithm.
@@ -34,10 +35,6 @@ const __hashSecretSync = (secret: string): Buffer => {
   sha256.update(secret);
   return sha256.digest();
 };
-
-
-
-
 
 /* ************************************************************************************************
  *                                             CIPHER                                             *
@@ -75,10 +72,6 @@ const encryptDataSync = (secret: string, data: string): string => {
   return Buffer.concat([iv, ciphertext, cipher.final()]).toString('base64');
 };
 
-
-
-
-
 /* ************************************************************************************************
  *                                            DECIPHER                                            *
  ************************************************************************************************ */
@@ -113,10 +106,6 @@ const decryptDataSync = (secret: string, encryptedData: Buffer): string => {
 
   return Buffer.concat([decipher.update(ciphertext), decipher.final()]).toString();
 };
-
-
-
-
 
 /* ************************************************************************************************
  *                                         MODULE EXPORTS                                         *

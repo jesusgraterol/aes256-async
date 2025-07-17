@@ -1,10 +1,5 @@
 import { Buffer } from 'node:buffer';
-import {
-  decryptData,
-  encryptData,
-  decryptDataSync,
-  encryptDataSync,
-} from './utils/index.js';
+import { decryptData, encryptData, decryptDataSync, encryptDataSync } from './utils/index.js';
 import {
   validateInput,
   validateEncryptedBuffer,
@@ -69,10 +64,6 @@ const encrypt = async (secret: string, data: string): Promise<string> => {
   return encrypted;
 };
 
-
-
-
-
 /* ************************************************************************************************
  *                                          SYNCHRONOUS                                           *
  ************************************************************************************************ */
@@ -129,10 +120,6 @@ const encryptSync = (secret: string, data: string): string => {
   // finally, return the encrypted message
   return encrypted;
 };
-
-
-
-
 
 /* ************************************************************************************************
  *                                         MODULE EXPORTS                                         *

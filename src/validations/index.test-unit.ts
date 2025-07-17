@@ -34,8 +34,8 @@ describe('validateInput', () => {
 
   test('validateDecryptedData', () => {
     const enc = encryptDataSync('SomeCoolSecret', 'Hello World!');
-    expect(
-      () => validateDecryptedData(decryptDataSync('SomeWrongSecret', Buffer.from(enc))),
+    expect(() =>
+      validateDecryptedData(decryptDataSync('SomeWrongSecret', Buffer.from(enc))),
     ).toThrowError(ERRORS.WRONG_SECRET);
   });
 
