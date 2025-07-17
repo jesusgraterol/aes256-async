@@ -15,7 +15,12 @@ import { ERRORS } from '../shared/errors.js';
  */
 const __validateSecret = (secret: string): void => {
   if (typeof secret !== 'string' || secret.length === 0) {
-    throw new Error(encodeError('The provided secret is invalid, please make sure to provide a non-empty string.', ERRORS.INVALID_SECRET));
+    throw new Error(
+      encodeError(
+        'The provided secret is invalid, please make sure to provide a non-empty string.',
+        ERRORS.INVALID_SECRET,
+      ),
+    );
   }
 };
 
@@ -27,7 +32,12 @@ const __validateSecret = (secret: string): void => {
  */
 const __validateData = (data: string): void => {
   if (typeof data !== 'string' || data.length === 0 || data.includes(ILLEGAL_CHARACTER)) {
-    throw new Error(encodeError('The provided data is invalid, please make sure to provide a non-empty string that only contains UTF-8 character encoding.', ERRORS.INVALID_OR_EMPTY_DATA));
+    throw new Error(
+      encodeError(
+        'The provided data is invalid, please make sure to provide a non-empty string that only contains UTF-8 character encoding.',
+        ERRORS.INVALID_OR_EMPTY_DATA,
+      ),
+    );
   }
 };
 
@@ -52,7 +62,12 @@ const validateInput = (secret: string, data: string): void => {
  */
 const validateEncryptedBuffer = (input: Buffer): void => {
   if (input.length < 17) {
-    throw new Error(encodeError('The provided encrypted data must decrypt to a non-empty string.', ERRORS.INVALID_ENCRYPTED_DATA));
+    throw new Error(
+      encodeError(
+        'The provided encrypted data must decrypt to a non-empty string.',
+        ERRORS.INVALID_ENCRYPTED_DATA,
+      ),
+    );
   }
 };
 
@@ -65,7 +80,9 @@ const validateEncryptedBuffer = (input: Buffer): void => {
  */
 const validateDecryptedData = (data: string): void => {
   if (typeof data !== 'string' || data.length === 0 || data.includes(ILLEGAL_CHARACTER)) {
-    throw new Error(encodeError('Failed to decrypt the data with the provided secret.', ERRORS.WRONG_SECRET));
+    throw new Error(
+      encodeError('Failed to decrypt the data with the provided secret.', ERRORS.WRONG_SECRET),
+    );
   }
 };
 
@@ -79,20 +96,13 @@ const validateDecryptedData = (data: string): void => {
  */
 const validateEncryptionResult = (data: string, decryptedData: string): void => {
   if (data !== decryptedData) {
-    throw new Error(encodeError('The data could not be decrypted correctly.', ERRORS.CORRUPTED_DATA));
+    throw new Error(
+      encodeError('The data could not be decrypted correctly.', ERRORS.CORRUPTED_DATA),
+    );
   }
 };
-
-
-
-
 
 /* ************************************************************************************************
  *                                         MODULE EXPORTS                                         *
  ************************************************************************************************ */
-export {
-  validateInput,
-  validateEncryptedBuffer,
-  validateDecryptedData,
-  validateEncryptionResult,
-};
+export { validateInput, validateEncryptedBuffer, validateDecryptedData, validateEncryptionResult };

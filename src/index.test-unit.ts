@@ -1,10 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import {
-  decrypt,
-  encrypt,
-  decryptSync,
-  encryptSync,
-} from './index.js';
+import { decrypt, encrypt, decryptSync, encryptSync } from './index.js';
 import * as td from './index.test-data.js';
 import { ERRORS } from './shared/errors.js';
 
@@ -47,10 +42,6 @@ describe('Asynchronous Implementation', () => {
     await expect(() => decrypt('12345', enc)).rejects.toThrowError(ERRORS.WRONG_SECRET);
   });
 });
-
-
-
-
 
 describe('Synchronous Implementation', () => {
   test.each([

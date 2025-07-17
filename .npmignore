@@ -1,5 +1,9 @@
+/.github
 /src
 .eslintrc.json
+.gitignore
+.prettierignore
+.prettierrc
 /tsconfig.json
 /tsconfig.build.json
 /vitest.test-integration.config.ts

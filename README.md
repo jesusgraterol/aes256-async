@@ -12,7 +12,7 @@ The `aes256-async` package allows developers to easily encrypt and decrypt data 
 
 Install the package:
 ```bash
-npm install -S aes256-async
+npm i -S aes256-async
 ```
 
 
@@ -91,28 +91,3 @@ npm run test:unit
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
-
-
-
-
-
-<br/>
-
-## Deployment
-
-Install dependencies:
-```bash
-npm install
-```
-
-
-Build the library:
-```bash
-npm start
-```
-
-
-Publish to `npm`:
-```bash
-npm publish
-```
