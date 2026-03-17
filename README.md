@@ -75,6 +75,9 @@ decryptSync(secret, 'OrGfQ/91d7p/1BN6Q07Jly5ZK0/7pyczjk5vgw==')
 ## Running the Tests
 
 ```bash
+# unit and integration tests
+npm run tst
+
 # integration tests
 npm run test:integration
 
