@@ -1,6 +1,6 @@
 {
   "name": "aes256-async",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "The aes256-async package allows developers to easily encrypt and decrypt data by making use of the AES-256 specification. It exposes syncrhonous and asynchronous functions to avoid blocking the main thread. Moreover, the secret can be of any size because it is hashed using the Secure Hash Algorithm 2 (SHA-256).",
   "private": false,
   "type": "module",
@@ -8,7 +8,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "ts-lib-builder --tsconfig=tsconfig.build.json",
-    "test": "echo \"Error: tests are executed with  npm run test:(e2e|integration|unit|bench)\" && exit 1",
+    "test": "npm run test:unit && npm run test:integration",
     "test:e2e": "vitest run --config=vitest.test-e2e.config.ts",
     "test:integration": "vitest run --config vitest.test-integration.config.ts",
     "test:unit": "vitest run --config vitest.test-unit.config.ts",
@@ -43,11 +43,11 @@
     "eslint-config-airbnb-typescript": "18.0.0",
     "eslint-config-prettier": "10.1.5",
     "prettier": "3.6.2",
-    "ts-lib-builder": "1.0.7",
+    "ts-lib-builder": "1.0.8",
     "typescript": "5.7.3",
     "vitest": "3.2.4"
   },
   "dependencies": {
-    "error-message-utils": "1.1.5"
+    "error-message-utils": "1.1.6"
   }
 }
